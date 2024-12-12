@@ -76,11 +76,8 @@ namespace Werks_Tally
             if (Items == null) return;
             if (Items.Count == 0) return;
 
-            string outputPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Output");
-            if (!Directory.Exists(outputPath))
-            {
-                Directory.CreateDirectory(outputPath);
-            }
+            string outputPath = AppDomain.CurrentDomain.BaseDirectory;
+
             string filePathText = System.IO.Path.Combine(outputPath, "Werks.txt");
             string filePathCSV = System.IO.Path.Combine(outputPath, "AllWerks.csv");
             if (!File.Exists(filePathCSV))
