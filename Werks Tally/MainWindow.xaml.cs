@@ -29,7 +29,18 @@ namespace Werks_Tally
         public MainWindow()
         {
             InitializeComponent();
+            string configFilePath = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
+            if (!File.Exists(configFilePath))
+            {
+                File.WriteAllText(configFilePath, "Central_CSV_Path=");
+            }
+            else
+            {
+                centralCSVPath = File.ReadAllText(configFilePath).Split('=')[1];
+            }
         }
+
+        public static string centralCSVPath = "";
 
         public List<WerksItem> Items { get; set; }
 
@@ -85,6 +96,11 @@ namespace Werks_Tally
                 File.WriteAllText(filePathCSV, "ItemName,ItemCount,Date" + Environment.NewLine);
             }
 
+            if (centralCSVPath != "" && !File.Exists(centralCSVPath))
+            {
+                File.WriteAllText(centralCSVPath, "ItemName,ItemCount,Date" + Environment.NewLine);
+            }
+
             try
             {
                 using (StreamWriter writerCSV = new StreamWriter(filePathCSV, true))
@@ -92,6 +108,17 @@ namespace Werks_Tally
                     foreach (var item in Items)
                     {
                         writerCSV.WriteLine($"{item.ItemName},{item.CompletionCount},{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                    }
+                }
+
+                if (centralCSVPath != "")
+                {
+                    using (StreamWriter writerCSV = new StreamWriter(centralCSVPath, true))
+                    {
+                        foreach (var item in Items)
+                        {
+                            writerCSV.WriteLine($"{item.ItemName},{item.CompletionCount},{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                        }
                     }
                 }
 
