@@ -3,7 +3,7 @@
 Utility that parses a facility log into the number of completed projects in the game Foxhole. Used for tracking contribution to the Foxhole war effort for facilities.
 
 # How to use:
-1. Enter a facility log and use an OCR utility like PowerToys Text Extractor or Win11's Snipping Tool's "Copy all text" feature.
+1. Enter a facility log in Foxhole and use an OCR utility like PowerToys Text Extractor or Win11's Snipping Tool's "Copy all text" feature.
 2. Copy the resulting text into the textbox to the left. Repeat and append the text from all the facilities you wish to parse the Werks from.
 3. Press the "Process raw data" button.
 ![image](https://github.com/user-attachments/assets/c3620af9-7624-4dfb-9c2b-1b6026142792)
