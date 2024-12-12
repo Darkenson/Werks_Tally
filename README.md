@@ -1,4 +1,5 @@
 # Werks_Tally
+![WerksTallyHeader](https://github.com/user-attachments/assets/5b23fdac-af13-4c66-8463-60c5664588da)
 Utility that parses a facility log into the number of completed projects in the game Foxhole. Used for tracking contribution to the Foxhole war effort for facilities.
 
 # How to use:
