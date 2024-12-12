@@ -50,6 +50,7 @@ namespace Werks_Tally
                 .ToList();
 
             WerksList.ItemsSource = Items;
+            //WerksReader.Text = "";
         }
 
         private List<string> ProcessWerksInput(string input)
@@ -72,7 +73,8 @@ namespace Werks_Tally
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!Items.Any()) return;
+            if (Items == null) return;
+            if (Items.Count == 0) return;
 
             string outputPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Output"); 
             string filePathText = System.IO.Path.Combine(outputPath, "Werks.txt");
@@ -85,25 +87,42 @@ namespace Werks_Tally
             { 
                 Directory.CreateDirectory(outputPath); 
             }
-            using (StreamWriter writer = new StreamWriter(filePathText, true))
+
+            try
             {
-                writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                writer.WriteLine();
-                foreach (var item in Items)
+                using (StreamWriter writerCSV = new StreamWriter(filePathCSV, true))
                 {
-                    writer.WriteLine($"{item.CompletionCount}x {item.ItemName}");
+                    foreach (var item in Items)
+                    {
+                        writerCSV.WriteLine($"{item.ItemName},{item.CompletionCount},{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                    }
                 }
-                writer.WriteLine("------------------------------------------");
-                writer.WriteLine();
+
+                using (StreamWriter writer = new StreamWriter(filePathText, true))
+                {
+                    writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    writer.WriteLine();
+                    foreach (var item in Items)
+                    {
+                        writer.WriteLine($"{item.CompletionCount}x {item.ItemName}");
+                    }
+                    writer.WriteLine("------------------------------------------");
+                    writer.WriteLine();
+                }
             }
-            using (StreamWriter writerCSV = new StreamWriter(filePathCSV, true))
+            catch (Exception)
             {
-                foreach (var item in Items)
-                {
-                    writerCSV.WriteLine($"{item.ItemName},{item.CompletionCount},{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-                }
+                MessageBox.Show($"Cannot save the output files. {Environment.NewLine}Do you have the CSV file open in Excel?{Environment.NewLine}If so, close it and click again.", "Cannot save output", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                return;
             }
-            Process.Start(new ProcessStartInfo { FileName = filePathText, UseShellExecute = true });
+
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = filePathText, UseShellExecute = true });
+            }
+            catch
+            { }
         }
     }
 

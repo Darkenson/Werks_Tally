@@ -104,5 +104,8 @@
   <ItemGroup>
     <Resource Include="WerksTally.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="mind-you-logo-favicon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
