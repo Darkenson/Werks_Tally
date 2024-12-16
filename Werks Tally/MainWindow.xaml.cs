@@ -34,43 +34,26 @@ namespace Werks_Tally
             string configFilePath = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
             if (!File.Exists(configFilePath))
             {
-                File.WriteAllText(configFilePath, "Central_CSV_Path=");
+                File.WriteAllText(configFilePath, "Central_CSV_Path=" + Environment.NewLine + "OCR_Language=eng");
             }
             else
             {
-                centralCSVPath = File.ReadAllText(configFilePath).Split('=')[1];
+                try
+                {
+                    string[] configLines = File.ReadAllLines(configFilePath);
+                    centralCSVPath = configLines[0].Split('=')[1];
+                    ocrLang = configLines[1].Split('=')[1];
+                }
+                catch { }
             }
             //// Enable drag and drop
             //imgPastedImage.AllowDrop = true;
             //imgPastedImage.PreviewDragOver += Image_PreviewDragOver;
             //imgPastedImage.Drop += Image_Drop;
 
-            //// Enable paste via keyboard shortcut
-            //KeyDown += MainWindow_KeyDown;
-            //CommandBindings.Add(new CommandBinding(
-            //                    ApplicationCommands.Paste,
-            //                    HandlePasteOverride
-            //                    ));
             SetupImagePreviewPopup();
         }
-
-        //private void HandlePasteOverride(object sender, ExecutedRoutedEventArgs e)
-        //{
-        //    // Check if the paste is happening in a TextBox
-        //    if (sender is TextBox)
-        //    {
-        //        // If Clipboard has an image, handle the image paste first
-        //        if (Clipboard.ContainsImage())
-        //        {
-        //            // Call your image paste method
-        //            //CurrentImage = Clipboard.GetImage();
-        //            LoadBitmapFromClipboard();
-
-        //            // Mark the event as handled to prevent default paste
-        //            e.Handled = true;
-        //        }
-        //    }
-        //}
+        string ocrLang = "eng";
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
@@ -205,9 +188,15 @@ namespace Werks_Tally
                 }
 
                 // Perform OCR
-                // IMPORTANT: Ensure you have 'eng.traineddata' in a 'tessdata' folder 
+                // IMPORTANT: Ensure you have 'eng.traineddata' 
                 // in your application directory or bin/Debug/net folder
-                using (var engine = new TesseractEngine(AppDomain.CurrentDomain.BaseDirectory, "eng", EngineMode.Default))
+                if (!File.Exists(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ocrLang + ".traineddata")))
+                {
+                    MessageBox.Show($"The OCR language module you have configured ({ocrLang}) could not be found next to the executable. Please download it from https://github.com/tesseract-ocr/tessdata or set it back to \"eng\" in the config.ini file.");
+                    return;
+                }
+
+                using (var engine = new TesseractEngine(AppDomain.CurrentDomain.BaseDirectory, ocrLang, EngineMode.Default))
                 {
                     using (var img = Pix.LoadFromFile(tempImagePath))
                     {
@@ -236,26 +225,6 @@ namespace Werks_Tally
         public static string centralCSVPath = "";
 
         public List<WerksItem> Items { get; set; }
-
-        //private void ProcessButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    string input = WerksReader.Text;
-        //    var completedItems = ProcessWerksInput(input);
-
-        //    Items = completedItems
-        //        // Remove empty or whitespace entries
-        //        .Where(item => !string.IsNullOrWhiteSpace(item))
-        //        .GroupBy(item => item)
-        //        .Select(g => new WerksItem
-        //        {
-        //            ItemName = g.Key,
-        //            CompletionCount = g.Count()
-        //        })
-        //        .ToList();
-
-        //    WerksList.ItemsSource = Items;
-        //    //WerksReader.Text = "";
-        //}
 
         private List<string> ProcessWerksInput(string input)
         {
