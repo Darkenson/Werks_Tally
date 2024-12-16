@@ -15,3 +15,4 @@ Note: The results are appended in the files, so if you save the same data multip
 
 In addition, the first time you run a program, it will create a config.ini file next to the executable. You can set a specific path for where you'd like the CSV file to be made and appended to, as well as switching OCR languages.
 Do note that if you switch OCR languages, you need to download the appropriate language file from https://github.com/tesseract-ocr/tessdata and place it next to the executable.
+However, currently the only supported language is English, due to how the parser reads the lines.
