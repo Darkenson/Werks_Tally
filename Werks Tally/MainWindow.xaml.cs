@@ -178,7 +178,7 @@ namespace Werks_Tally
             try
             {
                 // Save the image to a temporary file
-                string tempImagePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "temp_ocr_image.png");
+                string tempImagePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp_ocr_image.png");
 
                 using (var fileStream = new FileStream(tempImagePath, FileMode.Create))
                 {
@@ -214,7 +214,7 @@ namespace Werks_Tally
                 }
 
                 // Clean up temporary file
-                File.Delete(tempImagePath);
+                //File.Delete(tempImagePath);
             }
             catch (Exception ex)
             {
