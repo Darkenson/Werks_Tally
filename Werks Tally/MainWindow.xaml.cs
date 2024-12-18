@@ -168,9 +168,29 @@ namespace Werks_Tally
 
         private void LoadImage(string filePath)
         {
-            BitmapImage bitmap = new BitmapImage(new Uri(filePath, UriKind.Absolute));
-            imgPastedImage.Source = bitmap;
-            PerformOcr(bitmap);
+            BitmapImage originalBitmap = new BitmapImage(new Uri(filePath, UriKind.Absolute));
+
+            // Check if scaling is necessary
+            if (originalBitmap.PixelWidth > 600 || originalBitmap.PixelHeight > 600)
+            {
+                // Calculate scaling factor
+                double scale = Math.Min(600.0 / originalBitmap.PixelWidth, 600.0 / originalBitmap.PixelHeight);
+
+                // Create a new scaled bitmap
+                TransformedBitmap scaledBitmap = new TransformedBitmap(
+                    originalBitmap,
+                    new ScaleTransform(scale, scale)
+                );
+
+                imgPastedImage.Source = scaledBitmap;
+                PerformOcr(scaledBitmap);
+            }
+            else
+            {
+                // If no scaling is needed, use the original bitmap
+                imgPastedImage.Source = originalBitmap;
+                PerformOcr(originalBitmap);
+            }
         }
 
         private void PerformOcr(BitmapSource image)
