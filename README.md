@@ -3,8 +3,8 @@
 Utility that parses a facility log into the number of completed projects in the game Foxhole. Used for tracking contribution to the Foxhole war effort for facilities. Uses Tesseract OCR in order to read images.
 
 # How to use:
-1. Enter a facility log in Foxhole and take a screenshot of the in-game window using Windows Snipping tool or your other tool of choice.
-2. Copy the resulting image into the textbox to the left. Repeat for all the facilities you wish to parse the Werks from. You can mouse-over the little picture preview to see what you copied.
+1. Enter a facility log in Foxhole and take a screenshot of the in-game window using Windows Snipping tool (Windows+Shift+S) or your other tool of choice. You may also use a secondary OCR solution like PowerToys Text Extract or Win11 Snipping Tool's text extraction feature and copy the resulting text instead.
+2. Copy the resulting image or text into the textbox to the left. Repeat for all the facilities you wish to parse the Werks from. You can mouse-over the little picture preview to see what you copied.
 ![image](https://github.com/user-attachments/assets/6b1b9f7f-2f5e-4cbb-aad1-fe35a1ba5a08)
 3. After checking the results, press the "Save data" button. The results are saved in a Txt file which is opened after saving, as well as a CSV file you can open with your sheet editor of choice. The files will be created next to the executable.
 
